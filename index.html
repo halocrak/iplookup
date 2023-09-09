@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Lookup</title>
+    <style>
+        body {
+            background-image: url('https://giffiles.alphacoders.com/206/206747.gif'); /* Set your GIF URL here */
+            background-size: cover;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            text-align: center;
+            color: white;
+        }
+
+        #lookup-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #ip-input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #result {
+            background-color: black; /* Set background color to black */
+            margin-top: 20px;
+            font-size: 24px; /* Increase the font size for the result */
+            color: white; /* Set text color to white */
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1 id="header">IP Address Lookup By Mrx_Cod4r</h1>
+        <input type="text" id="ip-input" placeholder="Enter IP Address">
+        <button id="lookup-btn">LOOKUP</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getRandomColor() {
+            // Generate a random color in hexadecimal format
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        // Set a random color for the header
+        document.getElementById("header").style.color = getRandomColor();
+
+        document.getElementById("lookup-btn").addEventListener("click", function () {
+            // Get the entered IP address
+            var ipAddress = document.getElementById("ip-input").value;
+            if (!ipAddress) {
+                alert("Please enter an IP address.");
+                return;
+            }
+
+            // Fetch IP info using a free API (replace with your preferred API)
+            fetch("https://ipinfo.io/" + ipAddress + "/json")
+                .then(response => response.json())
+                .then(data => {
+                    // Check if data contains an error message
+                    if (data.error) {
+                        document.getElementById("result").innerHTML = "IP not found.";
+                    } else {
+                        // Display the IP info
+                        var result = "IP Address: " + data.ip + "<br>";
+                        result += "Country: " + data.country +  "<br>";
+                        result += "City: " + data.city +  "<br>";
+                        result += "Network: " + data.org+"<br>" ;
+                        result += "Google Map: " +"https://www.google.com/maps/@"+ data.loc ;
+                        document.getElementById("result").innerHTML = result;
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("result").innerHTML = "An error occurred.";
+                });
+        });
+    </script>
+</body>
+</html>
